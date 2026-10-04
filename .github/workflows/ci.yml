@@ -30,7 +30,14 @@ jobs:
           python main.py
 
       - name: AI Code Review
+        if: ${{ env.OPENAI_API_KEY != '' }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python review.py main.py
+
+      - name: AI Review Status
+        if: ${{ env.OPENAI_API_KEY == '' }}
+        run: |
+          echo "OPENAI_API_KEY is not configured."
+          echo "Skipping AI review for this run."
